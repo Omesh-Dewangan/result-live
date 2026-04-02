@@ -4,77 +4,77 @@
 
 @section('content')
 <div class="row animate-fade-in">
-    <div class="col-12 mb-4">
+    <div class="col-12 mb-3">
         <div class="d-flex align-items-center justify-content-between">
             <div>
-                <h2 class="fw-bold text-dark mb-1">Welcome back, Admin</h2>
-                <p class="text-muted mb-0">Here's what's happening with the examination system today.</p>
+                <h4 class="fw-bold text-dark mb-0">Welcome back, Admin</h4>
+                <p class="text-muted mb-0 small">Overview of the examination system activities.</p>
             </div>
             <div class="text-end d-none d-md-block">
-                <div class="fw-bold h5 mb-0" id="current-time"></div>
-                <div class="text-muted small">{{ date('l, d F Y') }}</div>
+                <div class="fw-bold h6 mb-0" id="current-time"></div>
+                <div class="text-muted" style="font-size: 0.75rem;">{{ date('l, d F Y') }}</div>
             </div>
         </div>
     </div>
 
     <!-- Quick Stats -->
-    <div class="col-md-3 mb-4">
-        <div class="card border-0 shadow-sm h-100 py-2">
-            <div class="card-body">
+    <div class="col-md-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <div class="small fw-bold text-muted text-uppercase mb-1">Total Candidates</div>
-                        <div class="h3 fw-bold mb-0">{{ number_format($totalResults) }}</div>
+                        <div class="fw-bold text-muted text-uppercase mb-1" style="font-size: 0.65rem;">Total Candidates</div>
+                        <div class="h5 fw-bold mb-0">{{ number_format($totalResults) }}</div>
                     </div>
-                    <div class="ms-3 bg-primary bg-opacity-10 text-primary rounded-3 p-3">
-                        <i class="fas fa-users-viewfinder fa-2x"></i>
+                    <div class="ms-2 bg-primary bg-opacity-10 text-primary rounded-3 p-2">
+                        <i class="fas fa-users-viewfinder fa-lg"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3 mb-4">
-        <div class="card border-0 shadow-sm h-100 py-2">
-            <div class="card-body">
+    <div class="col-md-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <div class="small fw-bold text-muted text-uppercase mb-1">Passed</div>
-                        <div class="h3 fw-bold mb-0 text-success">{{ number_format($passCount) }}</div>
+                        <div class="fw-bold text-muted text-uppercase mb-1" style="font-size: 0.65rem;">Passed</div>
+                        <div class="h5 fw-bold mb-0 text-success">{{ number_format($passCount) }}</div>
                     </div>
-                    <div class="ms-3 bg-success bg-opacity-10 text-success rounded-3 p-3">
-                        <i class="fas fa-user-check fa-2x"></i>
+                    <div class="ms-2 bg-success bg-opacity-10 text-success rounded-3 p-2">
+                        <i class="fas fa-user-check fa-lg"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3 mb-4">
-        <div class="card border-0 shadow-sm h-100 py-2">
-            <div class="card-body">
+    <div class="col-md-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <div class="small fw-bold text-muted text-uppercase mb-1">Failed</div>
-                        <div class="h3 fw-bold mb-0 text-danger">{{ number_format($failCount) }}</div>
+                        <div class="fw-bold text-muted text-uppercase mb-1" style="font-size: 0.65rem;">Failed</div>
+                        <div class="h5 fw-bold mb-0 text-danger">{{ number_format($failCount) }}</div>
                     </div>
-                    <div class="ms-3 bg-danger bg-opacity-10 text-danger rounded-3 p-3">
-                        <i class="fas fa-user-xmark fa-2x"></i>
+                    <div class="ms-2 bg-danger bg-opacity-10 text-danger rounded-3 p-2">
+                        <i class="fas fa-user-xmark fa-lg"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3 mb-4">
-        <div class="card border-0 shadow-sm h-100 py-2">
-            <div class="card-body">
+    <div class="col-md-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <div class="small fw-bold text-muted text-uppercase mb-1">Success Rate</div>
-                        <div class="h3 fw-bold mb-0 text-indigo">
+                        <div class="fw-bold text-muted text-uppercase mb-1" style="font-size: 0.65rem;">Success Rate</div>
+                        <div class="h5 fw-bold mb-0 text-indigo">
                             {{ $totalResults > 0 ? round(($passCount / $totalResults) * 100, 1) : 0 }}%
                         </div>
                     </div>
-                    <div class="ms-3 bg-info bg-opacity-10 text-info rounded-3 p-3">
-                        <i class="fas fa-chart-line fa-2x"></i>
+                    <div class="ms-2 bg-info bg-opacity-10 text-info rounded-3 p-2">
+                        <i class="fas fa-chart-line fa-lg"></i>
                     </div>
                 </div>
             </div>
@@ -82,48 +82,48 @@
     </div>
 
     <!-- System Control Center -->
-    <div class="col-lg-8 mb-4">
+    <div class="col-lg-8 mb-3">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 py-3">
-                <h5 class="mb-0 fw-bold"><i class="fas fa-shield-halved text-primary me-2"></i> System Control Center</h5>
+            <div class="card-header bg-white border-0 py-2">
+                <h6 class="mb-0 fw-bold"><i class="fas fa-shield-halved text-primary me-2"></i> System Control Center</h6>
             </div>
-            <div class="card-body">
-                <div class="row g-4">
+            <div class="card-body p-3">
+                <div class="row g-3">
                     <div class="col-md-6">
-                        <div class="p-3 border rounded-4 text-center h-100">
-                            <i class="fas fa-globe fa-2x {{ $settings->result_live ? 'text-success' : 'text-muted' }} mb-3"></i>
-                            <div class="fw-bold mb-1">Public Results</div>
-                            <p class="small text-muted mb-3">Allow students to query visibility.</p>
+                        <div class="p-2 border rounded-3 text-center h-100">
+                            <i class="fas fa-globe fa-lg {{ $settings->result_live ? 'text-success' : 'text-muted' }} mb-2"></i>
+                            <div class="fw-bold mb-0 small">Public Results</div>
+                            <p class="text-muted mb-2" style="font-size: 0.7rem;">Student query visibility.</p>
                             <div class="form-check form-switch d-inline-block">
-                                <input class="form-check-input h4 toggle-setting cursor-pointer" type="checkbox" data-setting="result_live" {{ $settings->result_live ? 'checked' : '' }}>
+                                <input class="form-check-input h5 toggle-setting cursor-pointer" type="checkbox" data-setting="result_live" {{ $settings->result_live ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="p-3 border rounded-4 text-center h-100">
-                            <i class="fas fa-door-open fa-2x {{ $settings->login_active ? 'text-primary' : 'text-muted' }} mb-3"></i>
-                            <div class="fw-bold mb-1">Portal Login</div>
-                            <p class="small text-muted mb-3">Enable individual candidate login.</p>
+                        <div class="p-2 border rounded-3 text-center h-100">
+                            <i class="fas fa-door-open fa-lg {{ $settings->login_active ? 'text-primary' : 'text-muted' }} mb-2"></i>
+                            <div class="fw-bold mb-0 small">Portal Login</div>
+                            <p class="text-muted mb-2" style="font-size: 0.7rem;">Candidate individual access.</p>
                             <div class="form-check form-switch d-inline-block">
-                                <input class="form-check-input h4 toggle-setting cursor-pointer" type="checkbox" data-setting="login_active" {{ $settings->login_active ? 'checked' : '' }}>
+                                <input class="form-check-input h5 toggle-setting cursor-pointer" type="checkbox" data-setting="login_active" {{ $settings->login_active ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- CSV Upload Section -->
-                <div class="mt-5 p-4 bg-light rounded-4">
+                <div class="mt-3 p-3 bg-light rounded-3">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h5 class="fw-bold mb-1">Bulk Import Records</h5>
-                            <p class="text-muted small mb-0">Excel/CSV parsing optimized for 500k+ data points using chunked processing.</p>
+                            <h6 class="fw-bold mb-0">Bulk Import Records</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.7rem;">Excel/CSV chunked processing (500k+ capacity).</p>
                         </div>
                         <div class="col-md-4 text-end">
                             <form action="{{ route('admin.results.import') }}" method="POST" enctype="multipart/form-data" id="import-form">
                                 @csrf
                                 <input type="file" name="file" id="file-upload" class="d-none" accept=".csv" onchange="submitImport()">
-                                <button type="button" class="btn btn-primary" onclick="document.getElementById('file-upload').click()">
-                                    <i class="fas fa-file-import me-2"></i> Start Import
+                                <button type="button" class="btn btn-primary btn-sm px-3" onclick="document.getElementById('file-upload').click()">
+                                    <i class="fas fa-file-import me-2"></i> Import CSV
                                 </button>
                             </form>
                         </div>
@@ -134,48 +134,48 @@
     </div>
 
     <!-- Quick Tools -->
-    <div class="col-lg-4 mb-4">
+    <div class="col-lg-4 mb-3">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 py-3">
-                <h5 class="mb-0 fw-bold"><i class="fas fa-bolt text-warning me-2"></i> Quick Actions</h5>
+            <div class="card-header bg-white border-0 py-2">
+                <h6 class="mb-0 fw-bold"><i class="fas fa-bolt text-warning me-2"></i> Quick Actions</h6>
             </div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
-                    <a href="{{ route('admin.results.index') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex align-items-center">
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
-                            <i class="fas fa-edit"></i>
+                    <a href="{{ route('admin.results.index') }}" class="list-group-item list-group-item-action border-0 px-3 py-2 d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-1 me-2">
+                            <i class="fas fa-edit small"></i>
                         </div>
                         <div>
-                            <div class="fw-bold mb-0">Manage Database</div>
-                            <div class="small text-muted">Update, Edit or Delete student records</div>
+                            <div class="fw-bold mb-0 small">Manage Database</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Edit student records</div>
                         </div>
-                        <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                        <i class="fas fa-chevron-right ms-auto text-muted small" style="font-size: 0.6rem;"></i>
                     </a>
-                    <a href="{{ route('admin.settings.index') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex align-items-center">
-                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 me-3">
-                            <i class="fas fa-clock"></i>
+                    <a href="{{ route('admin.settings.index') }}" class="list-group-item list-group-item-action border-0 px-3 py-2 d-flex align-items-center">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 me-2">
+                            <i class="fas fa-clock small"></i>
                         </div>
                         <div>
-                            <div class="fw-bold mb-0">Scheduling & Timers</div>
-                            <div class="small text-muted">Configure access windows</div>
+                            <div class="fw-bold mb-0 small">Scheduling</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Access windows</div>
                         </div>
-                        <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                        <i class="fas fa-chevron-right ms-auto text-muted small" style="font-size: 0.6rem;"></i>
                     </a>
-                    <a href="{{ route('student.search') }}" target="_blank" class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex align-items-center">
-                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
-                            <i class="fas fa-eye"></i>
+                    <a href="{{ route('student.search') }}" target="_blank" class="list-group-item list-group-item-action border-0 px-3 py-2 d-flex align-items-center">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-1 me-2">
+                            <i class="fas fa-eye small"></i>
                         </div>
                         <div>
-                            <div class="fw-bold mb-0">Public Portal Preview</div>
-                            <div class="small text-muted">Check UX from student perspective</div>
+                            <div class="fw-bold mb-0 small">Preview Portal</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Student perspective</div>
                         </div>
-                        <i class="fas fa-external-link-alt ms-auto text-muted small"></i>
+                        <i class="fas fa-external-link-alt ms-auto text-muted small" style="font-size: 0.6rem;"></i>
                     </a>
                 </div>
             </div>
-            <div class="card-footer bg-white border-0 p-4 pt-0">
-                <div class="alert alert-info border-0 rounded-4 py-3 mb-0">
-                    <i class="fas fa-info-circle me-2"></i> <strong>Pro Tip:</strong> Use the sidebar toggle to maximize your data view during bulk edits.
+            <div class="card-footer bg-white border-0 p-3 pt-0">
+                <div class="alert alert-info border-0 rounded-3 py-2 mb-0" style="font-size: 0.7rem;">
+                    <i class="fas fa-info-circle me-1"></i> Use sidebar toggle to maximize view.
                 </div>
             </div>
         </div>
