@@ -62,10 +62,40 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
             white-space: nowrap;
             overflow: hidden;
+            display: flex;
+            align-items: center;
         }
 
+        .sidebar-header h4 {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0;
+        }
+
+        .sidebar-header h4 i {
+            font-size: 1.5rem;
+            width: 24px;
+            text-align: center;
+            margin-right: 12px;
+            transition: margin 0.3s;
+        }
+        
         .sidebar-header h4 span {
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, display 0.2s;
+        }
+
+        body.sidebar-collapsed .sidebar-header {
+            padding: 1.5rem 0;
+        }
+
+        body.sidebar-collapsed .sidebar-header h4 {
+            justify-content: center;
+        }
+
+        body.sidebar-collapsed .sidebar-header h4 i {
+            margin-right: 0 !important;
         }
 
         body.sidebar-collapsed .sidebar-header h4 span {
@@ -77,24 +107,46 @@
             padding: 1rem 0;
             height: calc(100vh - 80px);
             overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-heading {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        body.sidebar-collapsed .sidebar-heading {
+            padding: 0 !important;
+            margin: 1.5rem 20px 1rem !important;
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        body.sidebar-collapsed .sidebar-heading span {
+            opacity: 0;
+            display: none;
         }
 
         .sidebar a { 
             color: #94a3b8; 
             text-decoration: none; 
-            padding: 12px 20px; 
+            padding: 12px 16px; 
             display: flex;
             align-items: center;
-            transition: all 0.2s;
-            margin: 4px 12px;
-            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 6px 16px;
+            border-radius: 10px;
             white-space: nowrap;
             overflow: hidden;
+            font-weight: 500;
         }
 
         .sidebar a i { 
-            font-size: 1.2rem; 
-            min-width: 35px; 
+            font-size: 1.25rem; 
+            width: 24px;
+            text-align: center;
+            margin-right: 12px;
             transition: margin 0.3s;
         }
 
@@ -102,27 +154,30 @@
             transition: opacity 0.2s;
         }
 
-        body.sidebar-collapsed .sidebar a span {
-            opacity: 0;
-            display: none;
-        }
-
         body.sidebar-collapsed .sidebar a {
-            padding: 12px;
+            padding: 14px 0;
+            margin: 8px 16px;
             justify-content: center;
+            border-radius: 12px;
         }
 
         body.sidebar-collapsed .sidebar a i {
             margin-right: 0;
         }
 
-        .sidebar a:hover, .sidebar a.active { 
+        body.sidebar-collapsed .sidebar a span {
+            opacity: 0;
+            display: none;
+        }
+
+        .sidebar a:hover { 
             background: rgba(255,255,255,0.05); 
             color: #fff; 
         }
         
         .sidebar a.active {
             background: var(--primary-color);
+            color: #fff;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
         }
 
@@ -209,9 +264,112 @@
             .sidebar, .top-navbar, .no-print { display: none !important; }
             .main-wrapper { margin-left: 0 !important; padding: 0 !important; width: 100% !important; }
         }
+        
+        /* Dark Mode Overrides for Admin Only */
+        body.admin-body.dark-mode {
+            --bg-main: #0f172a;
+            --text-main: #f8fafc;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --topbar-bg: #1e293b;
+            background-color: var(--bg-main) !important;
+            color: var(--text-main) !important;
+        }
+
+        body.admin-body.dark-mode .top-navbar {
+            background: var(--topbar-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        body.admin-body.dark-mode .sidebar-toggle {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        body.admin-body.dark-mode .sidebar-toggle:hover {
+            background: #475569;
+        }
+
+        body.admin-body.dark-mode .card,
+        body.admin-body.dark-mode .bg-white {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-main) !important;
+        }
+
+        body.admin-body.dark-mode .bg-light {
+            background-color: var(--bg-main) !important;
+        }
+
+        body.admin-body.dark-mode .table {
+            color: var(--text-main) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        body.admin-body.dark-mode .table td, 
+        body.admin-body.dark-mode .table th {
+            background-color: var(--card-bg) !important;
+            border-bottom-color: var(--border-color) !important;
+            color: var(--text-main) !important;
+        }
+
+        body.admin-body.dark-mode .form-control,
+        body.admin-body.dark-mode .form-select {
+            background-color: #334155 !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-main) !important;
+        }
+
+        body.admin-body.dark-mode .form-control:focus,
+        body.admin-body.dark-mode .form-select:focus {
+            background-color: #334155 !important;
+            border-color: var(--primary-color) !important;
+            color: var(--text-main) !important;
+        }
+
+        body.admin-body.dark-mode .dropdown-menu {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        body.admin-body.dark-mode .dropdown-item {
+            color: var(--text-main);
+        }
+
+        body.admin-body.dark-mode .dropdown-item:hover {
+            background-color: #334155;
+            color: var(--text-main);
+        }
+
+        body.admin-body.dark-mode .modal-content {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-main);
+        }
+
+        body.admin-body.dark-mode .modal-header,
+        body.admin-body.dark-mode .modal-footer {
+            border-color: var(--border-color);
+        }
+
+        body.admin-body.dark-mode .text-muted {
+            color: #94a3b8 !important;
+        }
+
+        body.admin-body.dark-mode .text-dark {
+            color: var(--text-main) !important;
+        }
+        
+        body.admin-body.dark-mode .top-navbar .btn {
+            color: var(--text-main);
+        }
+        
+        body.admin-body.dark-mode .border {
+            border-color: var(--border-color) !important;
+        }
     </style>
 </head>
-<body class="">
+<body class="@auth admin-body @endauth">
     @auth
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -220,7 +378,7 @@
     <div class="sidebar">
         <div class="sidebar-header">
             <h4 class="mb-0 fw-bold d-flex align-items-center">
-                <i class="fas fa-graduation-cap text-primary me-3"></i>
+                <i class="fas fa-graduation-cap text-primary"></i>
                 <span>Result <strong>Admin</strong></span>
             </h4>
         </div>
@@ -255,6 +413,9 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
+                <button class="btn border-0 me-3 shadow-none" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon fs-5 text-secondary" id="darkModeIcon"></i>
+                </button>
                 <div class="dropdown">
                     <button class="btn border-0 d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
@@ -324,6 +485,26 @@
                     }
                 }
             });
+            
+            // Dark Mode Logic (Admin Only)
+            if ($('body').hasClass('admin-body')) {
+                const darkMode = localStorage.getItem('adminDarkMode');
+                if (darkMode === 'enabled') {
+                    $('body').addClass('dark-mode');
+                    $('#darkModeIcon').removeClass('fa-moon').addClass('fa-sun');
+                }
+
+                $('#darkModeToggle').on('click', function() {
+                    $('body').toggleClass('dark-mode');
+                    if ($('body').hasClass('dark-mode')) {
+                        localStorage.setItem('adminDarkMode', 'enabled');
+                        $('#darkModeIcon').removeClass('fa-moon').addClass('fa-sun');
+                    } else {
+                        localStorage.setItem('adminDarkMode', 'disabled');
+                        $('#darkModeIcon').removeClass('fa-sun').addClass('fa-moon');
+                    }
+                });
+            }
         });
     </script>
     @yield('scripts')
