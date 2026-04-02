@@ -356,6 +356,7 @@
             color: #94a3b8 !important;
         }
 
+        
         body.admin-body.dark-mode .text-dark {
             color: var(--text-main) !important;
         }
