@@ -390,9 +390,9 @@
             <a href="{{ route('admin.results.index') }}" class="{{ request()->routeIs('admin.results.*') ? 'active' : '' }}">
                 <i class="fas fa-database"></i> <span>Manage Results</span>
             </a>
-            <a href="{{ route('admin.template.index') }}" class="{{ request()->routeIs('admin.template.*') ? 'active' : '' }}">
+            {{-- <a href="{{ route('admin.template.index') }}" class="{{ request()->routeIs('admin.template.*') ? 'active' : '' }}">
                 <i class="fas fa-magic"></i> <span>Result Designer</span>
-            </a>
+            </a> --}}
             <a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                 <i class="fas fa-sliders-h"></i> <span>System Settings</span>
             </a>
