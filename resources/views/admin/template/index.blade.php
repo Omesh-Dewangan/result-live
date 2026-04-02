@@ -1,28 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Result Marksheet Designer | Admin Panel')
+@section('title', 'Result Marksheet Designer')
 
 @section('content')
-<div class="row animate-fade-in g-2">
-    <!-- Page Header & Global Actions -->
+<div class="row animate-fade-in g-3">
+    <!-- Header: Compact Top Bar -->
     <div class="col-12">
         <div class="card border-0 shadow-sm bg-white p-2 px-3 rounded-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 shadow-hover border-top border-3 border-primary">
             <div>
                 <h6 class="fw-bold text-dark mb-0 d-flex align-items-center">
                     <i class="fas fa-magic text-primary me-2"></i>
-                    <span>Result Designer <span class="badge bg-primary bg-opacity-10 text-primary fw-normal ms-2 px-2 py-1" style="font-size: 0.65rem;">ENT-V2</span></span>
+                    <span>Result Designer <span class="badge bg-primary bg-opacity-10 text-primary fw-normal ms-2 px-2 py-1" style="font-size: 0.65rem;">ENT-V3 ARRANGE</span></span>
                 </h6>
-                <p class="text-muted mb-0" style="font-size: 0.7rem;">Professional HTML template builder for custom marksheets.</p>
+                <p class="text-muted mb-0 fw-medium" style="font-size: 0.65rem;">Smart IDE for professional examination marksheets.</p>
             </div>
             <div class="d-flex gap-2">
-                <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to default?')">
+                <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to professional default?')">
                     @csrf
-                    <button type="submit" class="btn btn-outline-danger border-1 rounded-2 px-2 py-1 fw-bold text-uppercase" style="font-size: 10px;">
-                        <i class="fas fa-undo me-1"></i> Reset
+                    <button type="submit" class="btn btn-outline-danger border-1 rounded-2 px-3 py-1 fw-bold text-uppercase" style="font-size: 10px;">
+                        <i class="fas fa-undo me-1"></i> Reset Default
                     </button>
                 </form>
                 <button type="submit" form="template-form" class="btn btn-primary rounded-2 px-3 py-1 fw-bold text-uppercase shadow-sm" style="font-size: 10px;">
-                    <i class="fas fa-save me-1"></i> Save
+                    <i class="fas fa-save me-1"></i> Update & Sync
                 </button>
             </div>
         </div>
@@ -30,122 +30,140 @@
 
     @if(session('success'))
         <div class="col-12 animate-fade-in">
-            <div class="alert alert-success border-0 shadow-sm rounded-3 py-2 px-3 mb-0 small">
+            <div class="alert alert-success border-0 shadow-xs rounded-3 py-2 px-3 mb-0" style="font-size: 0.75rem;">
                 <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
             </div>
         </div>
     @endif
 
-    <!-- Source Code Editor Card -->
-    <div class="col-lg-7 d-flex flex-column">
-        <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white flex-grow-1 d-flex flex-column">
-            <div class="card-header bg-white border-bottom-0 pt-2 px-2 pb-0 d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-dark" style="font-size: 0.75rem;">Source Editor</span>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-light border rounded-2 px-2 py-0 fw-bold text-primary dropdown-toggle d-flex align-items-center gap-1 shadow-sm" type="button" data-bs-toggle="dropdown" style="font-size: 10px;">
-                        <i class="fas fa-plus-circle"></i> Insert
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-1 rounded-3 mt-1">
-                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')" style="font-size: 0.7rem;"><i class="fas fa-table me-2"></i> marks Table</a></li>
-                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('header')" style="font-size: 0.7rem;"><i class="fas fa-id-card me-2 text-primary"></i> Academic Header</a></li>
-                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')" style="font-size: 0.7rem;"><i class="fas fa-table me-2 text-primary"></i> marks Table</a></li>
-                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('footer')" style="font-size: 0.7rem;"><i class="fas fa-pen-nib me-2 text-primary"></i> Official Footer</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body p-2 pt-2 d-flex flex-column flex-grow-1">
-                <div id="editor-container" style="flex-grow: 1; min-height: 400px; width: 100%; border: 1px solid #eef2f7; border-radius: 8px;">{{ $settings->result_template }}</div>
-                <form id="template-form" action="{{ route('admin.template.update') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="result_template" id="result_template_input">
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Right Side -->
-    <div class="col-lg-5">
+    <!-- Left Main Workbench (Col-8) -->
+    <div class="col-lg-8 animate-fade-in">
         <div class="d-flex flex-column gap-3 h-100">
-            <!-- Matrix Card -->
-            <div class="card border-0 shadow-sm rounded-3 bg-white overflow-hidden">
-                <div class="card-header bg-white border-bottom-0 pt-2 px-2 pb-0">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="fw-bold text-dark" style="font-size: 0.75rem;">Requirements Matrix</span>
-                        <div class="d-flex align-items-center gap-2">
-                             <span id="progress-percent" class="fw-black text-primary" style="font-size: 0.8rem;">0%</span>
-                             <div class="progress" style="width: 60px; height: 4px; border-radius: 100px; background: #f1f5f9;">
-                                <div id="global-progress" class="progress-bar bg-primary" role="progressbar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group mb-1 border-0 shadow-sm rounded-2 overflow-hidden bg-light">
-                        <span class="input-group-text bg-transparent border-0 ps-2 py-0"><i class="fas fa-search text-muted" style="font-size: 0.6rem;"></i></span>
-                        <input type="text" id="matrix-search" class="form-control bg-transparent border-0 py-1" style="font-size: 11px;" placeholder="Search fields..." onkeyup="filterMatrix()">
+            
+            <!-- Source Development Editor -->
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
+                <div class="card-header bg-white border-bottom-0 pt-2 px-3 pb-0 d-flex justify-content-between align-items-center">
+                    <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.65rem; letter-spacing: 1px;">Source Workbench</span>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-light border rounded-2 px-2 py-0 fw-bold text-primary dropdown-toggle d-flex align-items-center gap-1 shadow-sm" type="button" data-bs-toggle="dropdown" style="font-size: 10px;">
+                            <i class="fas fa-cubes"></i> Add Component
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-1 rounded-3 mt-1" style="font-size: 0.7rem;">
+                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('header')"><i class="fas fa-id-card me-2 text-primary opacity-75"></i> Academic Header</a></li>
+                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')"><i class="fas fa-table me-2 text-primary opacity-75"></i> Marks Table</a></li>
+                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('footer')"><i class="fas fa-pen-nib me-2 text-primary opacity-75"></i> Official Footer</a></li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="card-body p-1 pt-0">
-                    <div id="matrix-body" class="p-2" style="max-height: 300px; overflow-y: auto;">
-                        <div class="matrix-grid">
-                            <div class="matrix-category mb-2" id="cat-core">
-                                <span class="fw-bold text-uppercase text-primary" style="font-size: 0.6rem;">Mandatory Core</span>
-                                <div class="row row-cols-3 g-1 mt-1" id="grid-core"></div>
-                            </div>
-                            <div class="matrix-category mb-2" id="cat-profile">
-                                <span class="fw-bold text-uppercase text-secondary" style="font-size: 0.6rem;">Student Details</span>
-                                <div class="row row-cols-3 g-1 mt-1" id="grid-profile"></div>
-                            </div>
-                            <div class="matrix-category mb-2" id="cat-subjects">
-                                <span class="fw-bold text-uppercase text-info" style="font-size: 0.65rem;">Subject Data (1-20)</span>
-                                <div class="row row-cols-3 g-1 mt-1" id="grid-subjects"></div>
-                            </div>
-                            <div class="matrix-category" id="cat-security">
-                                <span class="fw-bold text-uppercase text-warning" style="font-size: 0.6rem;">Security</span>
-                                <div class="row row-cols-3 g-1 mt-1" id="grid-security"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body p-2 pt-2">
+                    <div id="editor-container" style="height: 380px; width: 100%; border: 1px solid #eef2f7; border-radius: 8px;">{{ $settings->result_template }}</div>
+                    <form id="template-form" action="{{ route('admin.template.update') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="result_template" id="result_template_input">
+                    </form>
                 </div>
             </div>
 
-            <!-- Preview Card -->
-            <div class="card border-0 shadow-sm rounded-3 overflow-hidden flex-grow-1 bg-white">
-                <div class="card-header bg-white border-bottom-0 pt-2 px-2 pb-0 d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-dark" style="font-size: 0.75rem;">Live Canvas</span>
-                    <span class="badge bg-success bg-opacity-10 text-success border-success border-opacity-25" style="font-size: 0.6rem;">SYNCING</span>
+            <!-- Real-time Live Canvas -->
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
+                <div class="card-header bg-white border-bottom-0 pt-2 px-3 pb-0 d-flex justify-content-between align-items-center">
+                    <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.65rem; letter-spacing: 1px;">Production Preview</span>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size: 0.55rem; letter-spacing: 1px;">
+                        <span class="pulse-dot me-1"></span> LIVE-SYNC ACTIVE
+                    </span>
                 </div>
-                <div class="card-body p-0 pt-1">
-                    <iframe id="preview-iframe" style="width: 100%; height: 350px; border: none; background: white;"></iframe>
+                <div class="card-body p-0 pt-1" style="background: #f8fafc;">
+                    <iframe id="preview-iframe" style="width: 100%; height: 500px; border: none; background: #fff;"></iframe>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Micro Reference Tags -->
-    <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-3 bg-white p-2">
-            <div class="d-flex flex-wrap gap-1">
-                @foreach(['[ROLL_NUMBER]', '[STUDENT_NAME]', '[FATHER_NAME]', '[COURSE]', '[SUBJECT_1]', '[SUBJECT_2]', '[SUBJECT_3]', '[TOTAL_MARKS]', '[STATUS]', '[VERIFICATION_QR]'] as $tag)
-                <div class="micro-chip py-0 px-2 border rounded-pill bg-light small text-muted pointer" onclick="copyTag('{{ $tag }}')" style="font-size: 10px;">{{ $tag }}</div>
-                @endforeach
+    <!-- Right Interaction Matrix (Col-4) -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-3 bg-white h-100 flex-column d-flex">
+            <div class="card-header bg-white border-bottom-0 pt-2 px-3 pb-0">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.7rem; letter-spacing: 1px;">Data Matrix</span>
+                    <div class="d-flex align-items-center gap-2">
+                         <span id="progress-percent" class="fw-black text-primary" style="font-size: 0.85rem;">0%</span>
+                         <div class="progress" style="width: 60px; height: 5px; border-radius: 100px; background: #f1f5f9;">
+                            <div id="global-progress" class="progress-bar bg-primary shadow-sm" role="progressbar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mini Search -->
+                <div class="input-group mb-1 border-0 shadow-xs rounded-2 overflow-hidden bg-light">
+                    <span class="input-group-text bg-transparent border-0 ps-2 py-0"><i class="fas fa-search text-muted" style="font-size: 0.65rem;"></i></span>
+                    <input type="text" id="matrix-search" class="form-control bg-transparent border-0 py-1" style="font-size: 11px;" placeholder="Filter tags..." onkeyup="filterMatrix()">
+                </div>
+            </div>
+
+            <div class="card-body p-0 flex-grow-1 overflow-hidden d-flex flex-column">
+                <div id="matrix-body" class="p-3 bg-light bg-opacity-50 flex-grow-1" style="max-height: 1000px; overflow-y: auto;">
+                    <div class="matrix-grid">
+                        <div class="matrix-category mb-2" id="cat-core">
+                            <span class="fw-bold text-uppercase text-primary d-flex align-items-center gap-2" style="font-size: 0.6rem;">
+                                <i class="fas fa-star shadow-sm"></i> MANDATORY CORE
+                            </span>
+                            <div class="row row-cols-2 g-1 mt-1" id="grid-core"></div>
+                        </div>
+                        <div class="matrix-category mb-2" id="cat-profile">
+                            <span class="fw-bold text-uppercase text-secondary d-flex align-items-center gap-2" style="font-size: 0.6rem;">
+                                <i class="fas fa-id-card-clip shadow-sm"></i> CANDIDATE INFO
+                            </span>
+                            <div class="row row-cols-2 g-1 mt-1" id="grid-profile"></div>
+                        </div>
+                        <div class="matrix-category mb-2" id="cat-subjects">
+                            <span class="fw-bold text-uppercase text-info d-flex align-items-center gap-2" style="font-size: 0.6rem;">
+                                <i class="fas fa-book-open shadow-sm"></i> SUBJECT DATA (1-20)
+                            </span>
+                            <div class="row row-cols-2 g-1 mt-1" id="grid-subjects"></div>
+                        </div>
+                        <div class="matrix-category" id="cat-security">
+                            <span class="fw-bold text-uppercase text-warning d-flex align-items-center gap-2" style="font-size: 0.6rem;">
+                                <i class="fas fa-shield-halved shadow-sm"></i> SECURITY
+                            </span>
+                            <div class="row row-cols-2 g-1 mt-1" id="grid-security"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer References Chips -->
+                <div class="p-2 border-top bg-white">
+                    <div class="d-flex flex-wrap gap-1">
+                        @foreach(['[ROLL_NUMBER]', '[STUDENT_NAME]', '[VERIFICATION_QR]', '[STATUS]'] as $tag)
+                        <div class="micro-chip text-muted pointer" onclick="copyTag('{{ $tag }}')" style="font-size: 9px;">{{ $tag }}</div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .display-tag { padding: 4px 6px; border-radius: 4px; border: 1px solid #f1f5f9; background: #fff; line-height: 1; transition: all 0.2s; position: relative;}
+    .fw-black { font-weight: 900; }
+    .display-tag { padding: 5px 8px; border-radius: 5px; border: 1px solid #eef2f7; background: #fff; line-height: 1; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); position: relative; cursor: pointer; }
+    .display-tag:hover { transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
     .display-tag.active { border-color: #10b981; background: #f0fdf4; color: #10b981; }
-    .display-tag.missing { opacity: 0.5; }
-    .display-tag label { font-size: 8px; margin-bottom: 0px; color: #94a3b8; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
-    .display-tag .tag-text { font-size: 9px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;}
-    .display-tag i { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 8px; }
+    .display-tag.missing { opacity: 0.55; }
+    .display-tag label { font-size: 8px; margin-bottom: 2px; color: #94a3b8; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; font-weight: 700;}
+    .display-tag .tag-text { font-size: 10px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; letter-spacing: -0.2px;}
+    .display-tag i { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 8px; }
     
     #matrix-body::-webkit-scrollbar { width: 3px; }
-    #matrix-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    #matrix-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .pointer { cursor: pointer; }
-    .micro-chip:hover { color: var(--primary-color) !important; border-color: var(--primary-color) !important; background: #fff !important; }
+    .micro-chip { padding: 1px 6px; border: 1px solid #f1f5f9; border-radius: 4px; background: #f8fafc; transition: 0.2s; }
+    .micro-chip:hover { border-color: #4f46e5; color: #4f46e5 !important; background: #fff; }
+
+    .pulse-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse-green 2s infinite; }
+    @keyframes pulse-green {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
 </style>
 @endsection
 
@@ -164,13 +182,17 @@
             { tag: 'FATHER_NAME', label: 'Father' },
             { tag: 'COURSE', label: 'Course' },
             { tag: 'DOB', label: 'DOB' },
+            { tag: 'GENDER', label: 'Gender' },
             { tag: 'ACADEMIC_YEAR', label: 'Year' },
-            { tag: 'SEMESTER', label: 'Sem' }
+            { tag: 'SEMESTER', label: 'Sem' },
+            { tag: 'ENROLLMENT_NO', label: 'Enroll No' }
         ],
-        subjects: Array.from({length: 15}, (_, i) => ({ tag: `SUBJECT_${i+1}`, label: `S-${i+1}` })),
+        subjects: Array.from({length: 20}, (_, i) => ({ tag: `SUBJECT_${i+1}`, label: `Subject Marks ${i+1}` })),
         security: [
             { tag: 'DECLARED_DATE', label: 'Date' },
-            { tag: 'TRACKING_ID', label: 'Audit ID' }
+            { tag: 'TRACKING_ID', label: 'Audit ID' },
+            { tag: 'STATUS_CLASS', label: 'CSS Class' },
+            { tag: 'VERIFIED_AT', label: 'Sync Time' }
         ]
     };
 
@@ -179,9 +201,9 @@
             const grid = document.getElementById(`grid-${cat}`);
             matrixConfiguration[cat].forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'col';
+                div.className = 'col animate-fade-in';
                 div.innerHTML = `
-                    <div class="display-tag missing shadow-xs" data-tag-box="${item.tag}">
+                    <div class="display-tag missing shadow-xs" data-tag-box="${item.tag}" onclick="insertTag('${item.tag}')">
                         <label>${item.label}</label>
                         <span class="tag-text">${item.tag}</span>
                         <i class="fas fa-circle-notch fa-spin opacity-25"></i>
@@ -193,10 +215,24 @@
     }
     renderMatrix();
 
+    function insertTag(tag) {
+        editor.insert(`[${tag}]`);
+        editor.focus();
+        updatePreview();
+        
+        // Brief visual success on the tag box
+        const box = document.querySelector(`[data-tag-box="${tag}"]`);
+        if(box) {
+            const originalColor = box.style.borderColor;
+            box.style.borderColor = "#4f46e5";
+            setTimeout(() => box.style.borderColor = originalColor, 300);
+        }
+    }
+
     const editor = ace.edit("editor-container");
     editor.setTheme("ace/theme/tomorrow");
     editor.session.setMode("ace/mode/html");
-    editor.setOptions({ fontPadding: 5, fontSize: "12px", showPrintMargin: false, wrap: true });
+    editor.setOptions({ fontPadding: 5, fontSize: "11px", showPrintMargin: false, wrap: true, highlightActiveLine: true });
 
     function filterMatrix() {
         const query = document.getElementById('matrix-search').value.toLowerCase();
@@ -243,12 +279,15 @@
 
         let previewContent = content;
         const mockMap = {
-            '\\[ROLL_NUMBER\\]': '1001552', '\\[STUDENT_NAME\\]': 'JOHN DOE', '\\[TOTAL_MARKS\\]': '398', '\\[STATUS\\]': 'PASS',
-            '\\[VERIFICATION_QR\\]': '<div class="bg-light border text-center rounded-2" style="width:50px; height:50px; font-size: 8px;">QR</div>'
+            '\\[ROLL_NUMBER\\]': '1001-552', '\\[STUDENT_NAME\\]': 'RAJESH KUMAR', '\\[FATHER_NAME\\]': 'SH. MOHAN DAS', 
+            '\\[COURSE\\]': 'B.TECH (CSE)', '\\[TOTAL_MARKS\\]': '398', '\\[STATUS\\]': 'PASS', '\\[STATUS_CLASS\\]': 'text-success', 
+            '\\[DECLARED_DATE\\]': '2026-06-15', '\\[VERIFIED_AT\\]': '2026-06-20 14:30', '\\[TRACKING_ID\\]': 'RT-9982-XYZ',
+            '\\[VERIFICATION_QR\\]': '<div class="bg-light border text-center rounded-2" style="width:40px; height:40px; font-size: 8px; border: 1px dashed #bbb !important;">QR</div>',
+            '\\[SUBJECT_1\\]': '85', '\\[SUBJECT_2\\]': '78', '\\[SUBJECT_3\\]': '92', '\\[SUBJECT_4\\]': '74', '\\[SUBJECT_5\\]': '69'
         };
         for (let key in mockMap) { previewContent = previewContent.replace(new RegExp(key, 'g'), mockMap[key]); }
 
-        iframe.srcdoc = `<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet"><style>body{padding:10px; font-family:'Outfit', sans-serif; font-size: 0.7rem;} .result-card{transform: scale(0.85); transform-origin: top center;}</style></head><body>${previewContent}</body></html>`;
+        iframe.srcdoc = `<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet"><style>body{padding:20px; font-family:'Inter', sans-serif; font-size: 0.75rem; background: #f8fafc; color: #1e293b;} .result-card{transform: scale(0.9); transform-origin: top center; margin: 0 auto; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1) !important;}</style></head><body>${previewContent}</body></html>`;
     }
 
     editor.on('change', updatePreview);
@@ -275,18 +314,18 @@
     <table class="table table-bordered mb-0 align-middle text-center" style="font-size: 0.75rem;">
         <thead class="bg-light text-dark fw-bold">
             <tr style="background: #f8fafc;">
-                <th class="py-1 px-2 border-0">SUBJECT</th>
+                <th class="py-1 px-2 border-0 text-start ps-3">SUBJECT</th>
                 <th class="py-1 border-0">MAX</th>
                 <th class="py-1 px-2 border-0">OBTAINED</th>
             </tr>
         </thead>
         <tbody>
-            <tr><td class="text-start px-2 small">Subject 01</td><td>100</td><td class="fw-bold">[SUBJECT_1]</td></tr>
-            <tr><td class="text-start px-2 small">Subject 02</td><td>100</td><td class="fw-bold">[SUBJECT_2]</td></tr>
+            <tr><td class="text-start px-3 small">Subject 01</td><td>100</td><td class="fw-bold">[SUBJECT_1]</td></tr>
+            <tr><td class="text-start px-3 small">Subject 02</td><td>100</td><td class="fw-bold">[SUBJECT_2]</td></tr>
         </tbody>
         <tfoot class="bg-light fw-bold">
             <tr>
-                <td colspan="2" class="text-end py-1 px-2 opacity-75">GRAND TOTAL</td>
+                <td colspan="2" class="text-end py-1 px-3 opacity-75">GRAND TOTAL</td>
                 <td class="text-primary py-1 px-2">[TOTAL_MARKS] / 500</td>
             </tr>
         </tfoot>
@@ -311,16 +350,13 @@
 
         if(snippets[type]) {
             if (type === 'header') {
-                // Insert at the absolute top
                 editor.session.insert({row: 0, column: 0}, snippets[type] + "\n\n");
                 editor.gotoLine(1, 0);
             } else if (type === 'footer') {
-                // Insert at the absolute bottom
                 const lastLine = editor.session.getLength();
                 editor.session.insert({row: lastLine, column: 0}, "\n\n" + snippets[type]);
-                editor.gotoLine(lastLine + 10, 0);
+                editor.scrollToLine(lastLine + 5);
             } else {
-                // Normal insert at cursor
                 editor.insert(snippets[type]);
             }
             updatePreview();

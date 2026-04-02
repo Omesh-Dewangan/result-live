@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Result Management System')</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter (Professional UI) & Outfit (Brand) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,9 +29,14 @@
 
         body { 
             background-color: var(--light-bg); 
-            font-family: 'Outfit', sans-serif; 
-            color: #334155;
+            font-family: 'Inter', sans-serif; 
+            color: #1e293b;
             overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        h1, h2, h3, h4, h5, h6, .sidebar-header, .fw-black {
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Sidebar Styles */

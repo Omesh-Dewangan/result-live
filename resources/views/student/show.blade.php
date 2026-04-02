@@ -31,7 +31,7 @@
 </div>
 
 <style>
-    body { background-color: #f1f5f9; font-family: 'Outfit', sans-serif; }
+    body { background-color: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; }
     
     @keyframes bounce {
         0%, 100% { transform: translateY(0); }
