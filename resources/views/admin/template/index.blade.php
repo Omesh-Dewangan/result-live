@@ -4,29 +4,7 @@
 
 @section('content')
 <div class="row animate-fade-in g-3">
-    <!-- Header: Compact Top Bar -->
-    <div class="col-12">
-        <div class="card border-0 shadow-sm bg-white p-2 px-3 rounded-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 shadow-hover border-top border-3 border-primary">
-            <div>
-                <h6 class="fw-bold text-dark mb-0 d-flex align-items-center">
-                    <i class="fas fa-magic text-primary me-2"></i>
-                    <span>Result Designer <span class="badge bg-primary bg-opacity-10 text-primary fw-normal ms-2 px-2 py-1" style="font-size: 0.65rem;">ENT-V3 ARRANGE</span></span>
-                </h6>
-                <p class="text-muted mb-0 fw-medium" style="font-size: 0.65rem;">Smart IDE for professional examination marksheets.</p>
-            </div>
-            <div class="d-flex gap-2">
-                <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to professional default?')">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-danger border-1 rounded-2 px-3 py-1 fw-bold text-uppercase" style="font-size: 10px;">
-                        <i class="fas fa-undo me-1"></i> Reset Default
-                    </button>
-                </form>
-                <button type="submit" form="template-form" class="btn btn-primary rounded-2 px-3 py-1 fw-bold text-uppercase shadow-sm" style="font-size: 10px;">
-                    <i class="fas fa-save me-1"></i> Update & Sync
-                </button>
-            </div>
-        </div>
-    </div>
+
 
     @if(session('success'))
         <div class="col-12 animate-fade-in">
@@ -40,18 +18,33 @@
     <div class="col-lg-8 animate-fade-in">
         <div class="d-flex flex-column gap-3 h-100">
             
-            <!-- Source Development Editor -->
-            <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
-                <div class="card-header bg-white border-bottom-0 pt-2 px-3 pb-0 d-flex justify-content-between align-items-center">
-                    <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.65rem; letter-spacing: 1px;">Source Workbench</span>
+            <!-- Source Development Editor (Dark Mode) -->
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-dark">
+                <div class="card-header border-bottom-0 pt-1 px-3 pb-1 d-flex justify-content-between align-items-center" style="background: #111;">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fw-black text-white text-uppercase opacity-50" style="font-size: 0.65rem; letter-spacing: 1px;">SOURCE EDITOR</span>
+                        <!-- Quick Controls -->
+                        <div class="d-flex gap-2">
+                            <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to default?')">
+                                @csrf
+                                <button type="submit" class="btn btn-link text-danger p-0 border-0 text-decoration-none fw-bold text-uppercase" style="font-size: 9px;">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                            </form>
+                            <button type="submit" form="template-form" class="btn btn-link text-primary p-0 border-0 text-decoration-none fw-bold text-uppercase" style="font-size: 9px;">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div class="dropdown">
-                        <button class="btn btn-sm btn-light border rounded-2 px-2 py-0 fw-bold text-primary dropdown-toggle d-flex align-items-center gap-1 shadow-sm" type="button" data-bs-toggle="dropdown" style="font-size: 10px;">
-                            <i class="fas fa-cubes"></i> Add Component
+                        <button class="btn btn-sm btn-dark border-secondary border-opacity-25 rounded-2 px-2 py-0 fw-bold text-light dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown" style="font-size: 10px; background: #222;">
+                            <i class="fas fa-plus-circle text-primary"></i> Insert
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-1 rounded-3 mt-1" style="font-size: 0.7rem;">
-                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('header')"><i class="fas fa-id-card me-2 text-primary opacity-75"></i> Academic Header</a></li>
-                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')"><i class="fas fa-table me-2 text-primary opacity-75"></i> Marks Table</a></li>
-                            <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('footer')"><i class="fas fa-pen-nib me-2 text-primary opacity-75"></i> Official Footer</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-1 rounded-3 mt-1 bg-dark" style="font-size: 0.7rem;">
+                            <li><a class="dropdown-item py-1 rounded-2 text-light" href="javascript:void(0)" onclick="insertSnippet('header')"><i class="fas fa-id-card me-2 text-primary opacity-75"></i> Academic Header</a></li>
+                            <li><a class="dropdown-item py-1 rounded-2 text-light" href="javascript:void(0)" onclick="insertSnippet('table')"><i class="fas fa-table me-2 text-primary opacity-75"></i> Marks Table</a></li>
+                            <li><a class="dropdown-item py-1 rounded-2 text-light" href="javascript:void(0)" onclick="insertSnippet('footer')"><i class="fas fa-pen-nib me-2 text-primary opacity-75"></i> Official Footer</a></li>
                         </ul>
                     </div>
                 </div>
@@ -66,8 +59,13 @@
 
             <!-- Real-time Live Canvas -->
             <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
-                <div class="card-header bg-white border-bottom-0 pt-2 px-3 pb-0 d-flex justify-content-between align-items-center">
-                    <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.65rem; letter-spacing: 1px;">Production Preview</span>
+                <div class="card-header bg-white border-bottom-0 pt-1 px-3 pb-1 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fw-black text-dark text-uppercase opacity-75" style="font-size: 0.65rem; letter-spacing: 1px;">PRODUCTION PREVIEW</span>
+                        <button class="btn btn-link text-primary p-0 border-0 text-decoration-none fw-bold text-uppercase d-flex align-items-center gap-1" onclick="openModalPreview()" style="font-size: 9px;">
+                            <i class="fas fa-expand-alt"></i> Full View
+                        </button>
+                    </div>
                     <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size: 0.55rem; letter-spacing: 1px;">
                         <span class="pulse-dot me-1"></span> LIVE-SYNC ACTIVE
                     </span>
@@ -167,9 +165,33 @@
 </style>
 @endsection
 
+<!-- Full Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%;">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header bg-dark text-white border-0 py-2">
+                <h6 class="modal-title fw-bold text-uppercase mb-0" style="font-size: 0.7rem; letter-spacing: 1.5px;">
+                    <i class="fas fa-desktop me-2 text-primary"></i> Production Full View
+                </h6>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.6rem;"></button>
+            </div>
+            <div class="modal-body p-0 bg-light">
+                <iframe id="modal-preview-iframe" style="width: 100%; height: 82vh; border: none; background: #fff;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
 <script>
+    function openModalPreview() {
+        const modalIframe = document.getElementById('modal-preview-iframe');
+        const mainIframe = document.getElementById('preview-iframe');
+        modalIframe.srcdoc = mainIframe.srcdoc;
+        new bootstrap.Modal(document.getElementById('previewModal')).show();
+    }
+
     const matrixConfiguration = {
         core: [
             { tag: 'ROLL_NUMBER', label: 'Roll ID' },
@@ -230,7 +252,7 @@
     }
 
     const editor = ace.edit("editor-container");
-    editor.setTheme("ace/theme/tomorrow");
+    editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/html");
     editor.setOptions({ fontPadding: 5, fontSize: "11px", showPrintMargin: false, wrap: true, highlightActiveLine: true });
 
@@ -288,6 +310,12 @@
         for (let key in mockMap) { previewContent = previewContent.replace(new RegExp(key, 'g'), mockMap[key]); }
 
         iframe.srcdoc = `<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet"><style>body{padding:20px; font-family:'Inter', sans-serif; font-size: 0.75rem; background: #f8fafc; color: #1e293b;} .result-card{transform: scale(0.9); transform-origin: top center; margin: 0 auto; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1) !important;}</style></head><body>${previewContent}</body></html>`;
+    }
+
+    function openModalPreview() {
+        const modalIframe = document.getElementById('modal-preview-iframe');
+        modalIframe.srcdoc = iframe.srcdoc;
+        new bootstrap.Modal(document.getElementById('previewModal')).show();
     }
 
     editor.on('change', updatePreview);
