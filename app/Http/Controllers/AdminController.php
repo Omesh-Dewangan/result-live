@@ -7,11 +7,12 @@ use App\Models\Result;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
     // ─── Cache TTLs ────────────────────────────────────────────────────────────
-    const STATS_TTL    = 300;   // 5 minutes  — dashboard counts
+    const STATS_TTL = 300;   // 5 minutes  — dashboard counts
     const SETTINGS_TTL = 120;   // 2 minutes  — settings row
 
     // ─── Cache Invalidation Helpers ────────────────────────────────────────────
@@ -72,12 +73,12 @@ class AdminController extends Controller
         $setting = Setting::firstOrCreate(['id' => 1]);
 
         $setting->update([
-            'result_live'  => $request->boolean('result_live'),
+            'result_live' => $request->boolean('result_live'),
             'login_active' => $request->boolean('login_active'),
-            'result_from'  => $request->filled('result_from') ? $request->result_from : null,
-            'result_to'    => $request->filled('result_to')   ? $request->result_to   : null,
-            'login_from'   => $request->filled('login_from')  ? $request->login_from  : null,
-            'login_to'     => $request->filled('login_to')    ? $request->login_to    : null,
+            'result_from' => $request->filled('result_from') ? $request->result_from : null,
+            'result_to' => $request->filled('result_to') ? $request->result_to : null,
+            'login_from' => $request->filled('login_from') ? $request->login_from : null,
+            'login_to' => $request->filled('login_to') ? $request->login_to : null,
         ]);
 
         // Invalidate settings cache so students see changes immediately
@@ -115,7 +116,7 @@ class AdminController extends Controller
 
         if ($request->search) {
             $query->where('roll_number', 'like', '%' . $request->search . '%')
-                  ->orWhere('name', 'like', '%' . $request->search . '%');
+                ->orWhere('name', 'like', '%' . $request->search . '%');
         }
         $results = $query->latest()->paginate(15);
         return view('admin.results.index', compact('results'));
@@ -130,21 +131,21 @@ class AdminController extends Controller
     {
         $request->validate([
             'roll_number' => 'required|unique:results,roll_number',
-            'name'        => 'required',
+            'name' => 'required',
             'father_name' => 'required',
-            'course'      => 'required',
-            'subject1'    => 'required|numeric|min:0|max:100',
-            'subject2'    => 'required|numeric|min:0|max:100',
-            'subject3'    => 'required|numeric|min:0|max:100',
-            'subject4'    => 'required|numeric|min:0|max:100',
-            'subject5'    => 'required|numeric|min:0|max:100',
+            'course' => 'required',
+            'subject1' => 'required|numeric|min:0|max:100',
+            'subject2' => 'required|numeric|min:0|max:100',
+            'subject3' => 'required|numeric|min:0|max:100',
+            'subject4' => 'required|numeric|min:0|max:100',
+            'subject5' => 'required|numeric|min:0|max:100',
         ]);
 
-        $total  = $request->subject1 + $request->subject2 + $request->subject3 + $request->subject4 + $request->subject5;
+        $total = $request->subject1 + $request->subject2 + $request->subject3 + $request->subject4 + $request->subject5;
         $status = ($request->subject1 > 33 && $request->subject2 > 33 && $request->subject3 > 33 && $request->subject4 > 33 && $request->subject5 > 33) ? 'Pass' : 'Fail';
 
         Result::create(array_merge($request->all(), [
-            'total'         => $total,
+            'total' => $total,
             'result_status' => $status
         ]));
 
@@ -163,23 +164,23 @@ class AdminController extends Controller
     {
         $request->validate([
             'roll_number' => 'required|unique:results,roll_number,' . $result->id,
-            'name'        => 'required',
+            'name' => 'required',
             'father_name' => 'required',
-            'course'      => 'required',
-            'subject1'    => 'required|numeric|min:0|max:100',
-            'subject2'    => 'required|numeric|min:0|max:100',
-            'subject3'    => 'required|numeric|min:0|max:100',
-            'subject4'    => 'required|numeric|min:0|max:100',
-            'subject5'    => 'required|numeric|min:0|max:100',
+            'course' => 'required',
+            'subject1' => 'required|numeric|min:0|max:100',
+            'subject2' => 'required|numeric|min:0|max:100',
+            'subject3' => 'required|numeric|min:0|max:100',
+            'subject4' => 'required|numeric|min:0|max:100',
+            'subject5' => 'required|numeric|min:0|max:100',
         ]);
 
-        $total  = $request->subject1 + $request->subject2 + $request->subject3 + $request->subject4 + $request->subject5;
+        $total = $request->subject1 + $request->subject2 + $request->subject3 + $request->subject4 + $request->subject5;
         $status = ($request->subject1 > 33 && $request->subject2 > 33 && $request->subject3 > 33 && $request->subject4 > 33 && $request->subject5 > 33) ? 'Pass' : 'Fail';
 
         $oldRollNumber = $result->roll_number;
 
         $result->update(array_merge($request->all(), [
-            'total'         => $total,
+            'total' => $total,
             'result_status' => $status
         ]));
 
@@ -200,34 +201,39 @@ class AdminController extends Controller
             'file' => 'required|mimes:csv,txt'
         ]);
 
-        $file   = $request->file('file');
+        $file = $request->file('file');
         $handle = fopen($file->getRealPath(), 'r');
         $header = fgetcsv($handle); // roll_number, name, father_name, course, s1, s2, s3, s4, s5
 
         $chunkSize = 1000;
-        $data      = [];
+        $data = [];
 
         while (($row = fgetcsv($handle)) !== FALSE) {
-            if (count($row) < 9) continue;
+            if (count($row) < 9)
+                continue;
 
-            $s1 = (int)$row[4]; $s2 = (int)$row[5]; $s3 = (int)$row[6]; $s4 = (int)$row[7]; $s5 = (int)$row[8];
-            $total  = $s1 + $s2 + $s3 + $s4 + $s5;
+            $s1 = (int) $row[4];
+            $s2 = (int) $row[5];
+            $s3 = (int) $row[6];
+            $s4 = (int) $row[7];
+            $s5 = (int) $row[8];
+            $total = $s1 + $s2 + $s3 + $s4 + $s5;
             $status = ($s1 > 33 && $s2 > 33 && $s3 > 33 && $s4 > 33 && $s5 > 33) ? 'Pass' : 'Fail';
 
             $data[] = [
-                'roll_number'   => $row[0],
-                'name'          => $row[1],
-                'father_name'   => $row[2],
-                'course'        => $row[3],
-                'subject1'      => $s1,
-                'subject2'      => $s2,
-                'subject3'      => $s3,
-                'subject4'      => $s4,
-                'subject5'      => $s5,
-                'total'         => $total,
+                'roll_number' => $row[0],
+                'name' => $row[1],
+                'father_name' => $row[2],
+                'course' => $row[3],
+                'subject1' => $s1,
+                'subject2' => $s2,
+                'subject3' => $s3,
+                'subject4' => $s4,
+                'subject5' => $s5,
+                'total' => $total,
                 'result_status' => $status,
-                'created_at'    => now(),
-                'updated_at'    => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             if (count($data) >= $chunkSize) {
@@ -278,11 +284,11 @@ class AdminController extends Controller
 
         // ── 1. Mandatory Placeholder Validation ──
         $mandatoryTags = [
-            '[ROLL_NUMBER]'     => 'Roll Number Tag',
-            '[STUDENT_NAME]'    => 'Student Name Tag',
-            '[TOTAL_MARKS]'     => 'Total Marks Tag',
+            '[ROLL_NUMBER]' => 'Roll Number Tag',
+            '[STUDENT_NAME]' => 'Student Name Tag',
+            '[TOTAL_MARKS]' => 'Total Marks Tag',
             '[VERIFICATION_QR]' => 'Verification QR Code Tag',
-            '[STATUS]'          => 'Result Status Tag',
+            '[STATUS]' => 'Result Status Tag',
         ];
 
         $missingTags = [];
@@ -325,5 +331,94 @@ class AdminController extends Controller
         $this->forgetSettings();
 
         return back()->with('success', 'Result template reset to default successfully');
+    }
+
+    // ─── Document Export & Preview Actions ─────────────────────────────────────
+
+    /** Export a single marksheet as PDF matching the Designer layout exactly. */
+    public function exportPdf(Result $result)
+    {
+        $setting = Setting::first();
+        $template = $setting->result_template;
+
+        // Use same parsing logic as preview
+        $tags = $this->getTemplateTags($result);
+        foreach ($tags as $tag => $val) {
+            $template = str_replace($tag, $val, $template);
+        }
+
+        $pages = [$template];
+        $pdf = Pdf::loadView('admin.results.pdf', compact('pages'))
+                    ->setPaper('a4', 'portrait')
+                    ->setOptions([
+                        'isRemoteEnabled' => true,
+                        'isHtml5ParserEnabled' => true,
+                        'defaultFont' => 'sans-serif'
+                    ]);
+        return $pdf->download("Marksheet-{$result->roll_number}.pdf");
+    }
+
+    /** Export selected marksheets as a single PDF. */
+    public function bulkPdf(Request $request)
+    {
+        $request->validate(['selected_results' => 'required|array|min:1']);
+        $results = Result::whereIn('id', $request->selected_results)->get();
+        if ($results->isEmpty()) return back()->with('error', 'No valid results selected');
+
+        $setting = Setting::first();
+        $pages = [];
+
+        foreach ($results as $result) {
+            $template = $setting->result_template;
+            $tags = $this->getTemplateTags($result);
+            foreach ($tags as $tag => $val) {
+                $template = str_replace($tag, $val, $template);
+            }
+            $pages[] = $template;
+        }
+
+        $pdf = Pdf::loadView('admin.results.pdf', compact('pages'))->setPaper('a4', 'portrait');
+        return $pdf->download("Bulk-Marksheets-" . date('Ymd') . ".pdf");
+    }
+
+    /** Generate real-time HTML preview for the Admin Modal. */
+    public function previewResult(Result $result)
+    {
+        $setting = Setting::first();
+        $template = $setting->result_template;
+
+        $tags = $this->getTemplateTags($result);
+        foreach ($tags as $tag => $val) {
+            $template = str_replace($tag, $val, $template);
+        }
+
+        return response()->json(['html' => $template]);
+    }
+
+    /** Helper to generate tag mappings for a result. */
+    private function getTemplateTags(Result $result)
+    {
+        $total = $result->subject1 + $result->subject2 + $result->subject3 + $result->subject4 + $result->subject5;
+        $status = $result->result_status;
+        $statusClass = ($status == 'Pass') ? 'text-success' : 'text-danger';
+
+        return [
+            '[ROLL_NUMBER]'     => $result->roll_number,
+            '[STUDENT_NAME]'    => $result->name,
+            '[FATHER_NAME]'     => $result->father_name,
+            '[COURSE]'          => $result->course,
+            '[TOTAL_MARKS]'     => $total,
+            '[STATUS]'          => $status,
+            '[STATUS_CLASS]'    => $statusClass,
+            '[DECLARED_DATE]'   => $result->created_at->format('Y-m-d'),
+            '[VERIFIED_AT]'     => now()->format('Y-m-d H:i'),
+            '[TRACKING_ID]'     => 'RT-' . $result->id . '-' . strtoupper(substr($result->roll_number, -4)),
+            '[VERIFICATION_QR]' => '<img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' . url('/result/'.$result->roll_number) . '" width="100">',
+            '[SUBJECT_1]'       => $result->subject1,
+            '[SUBJECT_2]'       => $result->subject2,
+            '[SUBJECT_3]'       => $result->subject3,
+            '[SUBJECT_4]'       => $result->subject4,
+            '[SUBJECT_5]'       => $result->subject5,
+        ];
     }
 }

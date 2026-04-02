@@ -24,7 +24,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings.index');
     Route::post('/settings/update', [AdminController::class, 'updateSettings'])->name('settings.update');
     Route::post('/settings/update-ajax', [AdminController::class, 'updateSettingAjax'])->name('settings.update-ajax');
-    
+
     // Result Template Designer
     Route::get('/template', [AdminController::class, 'editTemplate'])->name('template.index');
     Route::post('/template/update', [AdminController::class, 'updateTemplate'])->name('template.update');
@@ -38,4 +38,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/results/{result}', [AdminController::class, 'update'])->name('results.update');
     Route::post('/results/import', [AdminController::class, 'importResults'])->name('results.import');
     Route::delete('/results/{result}', [AdminController::class, 'destroy'])->name('results.destroy');
+
+    // PDF Export & Preview
+    Route::get('/results/{result}/pdf', [AdminController::class, 'exportPdf'])->name('results.pdf');
+    Route::post('/results/bulk-pdf', [AdminController::class, 'bulkPdf'])->name('results.bulk-pdf');
+    Route::get('/results/{result}/preview', [AdminController::class, 'previewResult'])->name('results.preview');
 });
