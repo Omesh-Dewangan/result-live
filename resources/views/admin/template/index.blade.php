@@ -24,15 +24,16 @@
                     <div class="d-flex align-items-center gap-3">
                         <span class="fw-black text-white text-uppercase opacity-50" style="font-size: 0.65rem; letter-spacing: 1px;">SOURCE EDITOR</span>
                         <!-- Quick Controls -->
-                        <div class="d-flex gap-2">
-                            <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to default?')">
+                        <div class="d-flex align-items-center gap-3 ms-3">
+                            <form action="{{ route('admin.template.reset') }}" method="POST" onsubmit="return confirm('Reset to default?')" class="m-0">
                                 @csrf
-                                <button type="submit" class="btn btn-link text-danger p-0 border-0 text-decoration-none fw-bold text-uppercase" style="font-size: 9px;">
-                                    <i class="fas fa-undo"></i> Reset
+                                <button type="submit" class="btn btn-link text-danger p-0 border-0 text-decoration-none fw-bold text-uppercase d-flex align-items-center gap-1" style="font-size: 9px; opacity: 0.8;">
+                                    <i class="fas fa-undo"></i> <span>Reset</span>
                                 </button>
                             </form>
-                            <button type="submit" form="template-form" class="btn btn-link text-primary p-0 border-0 text-decoration-none fw-bold text-uppercase" style="font-size: 9px;">
-                                <i class="fas fa-save"></i> Save
+                            <div class="text-white opacity-25" style="font-size: 10px;">|</div>
+                            <button type="submit" form="template-form" class="btn btn-link text-primary p-0 border-0 text-decoration-none fw-bold text-uppercase d-flex align-items-center gap-1" style="font-size: 9px; opacity: 0.8;">
+                                <i class="fas fa-save"></i> <span>Save Changes</span>
                             </button>
                         </div>
                     </div>
@@ -255,6 +256,7 @@
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/html");
     editor.setOptions({ fontPadding: 5, fontSize: "11px", showPrintMargin: false, wrap: true, highlightActiveLine: true });
+    editor.blur(); // Prevent autofocus on page load
 
     function filterMatrix() {
         const query = document.getElementById('matrix-search').value.toLowerCase();
