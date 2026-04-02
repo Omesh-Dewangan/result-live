@@ -47,7 +47,9 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-1 rounded-3 mt-1">
                         <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')" style="font-size: 0.7rem;"><i class="fas fa-table me-2"></i> marks Table</a></li>
-                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('header')" style="font-size: 0.7rem;"><i class="fas fa-id-card me-2"></i> Header</a></li>
+                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('header')" style="font-size: 0.7rem;"><i class="fas fa-id-card me-2 text-primary"></i> Academic Header</a></li>
+                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('table')" style="font-size: 0.7rem;"><i class="fas fa-table me-2 text-primary"></i> marks Table</a></li>
+                        <li><a class="dropdown-item py-1 rounded-2" href="javascript:void(0)" onclick="insertSnippet('footer')" style="font-size: 0.7rem;"><i class="fas fa-pen-nib me-2 text-primary"></i> Official Footer</a></li>
                     </ul>
                 </div>
             </div>
@@ -253,9 +255,69 @@
     window.addEventListener('load', updatePreview);
 
     function insertSnippet(type) {
-        if(type === 'table') editor.insert(`<table class="table table-bordered small"><tr><td>Subject</td><td>Marks</td></tr><tr><td>English</td><td>[SUBJECT_1]</td></tr></table>`);
-        if(type === 'header') editor.insert(`<header class="bg-primary text-white p-3 text-center rounded"><h4>University Board</h4></header>`);
-        updatePreview();
+        const snippets = {
+            header: `<div class="p-3 text-center text-white rounded-3 mb-3 shadow-sm" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+    <h5 class="fw-bold text-uppercase mb-1" style="letter-spacing: 1px; font-size: 1rem;">UNIVERSITY EXAMINATION BOARD</h5>
+    <p class="mb-0 opacity-75 fw-bold text-uppercase" style="font-size: 0.6rem;">OFFICIAL STATEMENT OF MARKS - 2026</p>
+</div>
+
+<div class="row g-2 mb-3 pb-2 border-bottom" style="font-size: 0.75rem;">
+    <div class="col-7">
+        <div class="mb-1 text-muted">NAME: <span class="text-dark fw-bold">[STUDENT_NAME]</span></div>
+        <div class="mb-0 text-muted">ROLL NO: <span class="text-dark fw-bold">[ROLL_NUMBER]</span></div>
+    </div>
+    <div class="col-5 text-end border-start">
+        <div class="mb-1 text-muted">COURSE: <span class="text-dark fw-bold">[COURSE]</span></div>
+        <div class="mb-0 text-muted">FATHER: <span class="text-dark fw-bold">[FATHER_NAME]</span></div>
+    </div>
+</div>`,
+            table: `<div class="table-responsive border rounded-3 overflow-hidden mb-3 shadow-xs bg-white">
+    <table class="table table-bordered mb-0 align-middle text-center" style="font-size: 0.75rem;">
+        <thead class="bg-light text-dark fw-bold">
+            <tr style="background: #f8fafc;">
+                <th class="py-1 px-2 border-0">SUBJECT</th>
+                <th class="py-1 border-0">MAX</th>
+                <th class="py-1 px-2 border-0">OBTAINED</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="text-start px-2 small">Subject 01</td><td>100</td><td class="fw-bold">[SUBJECT_1]</td></tr>
+            <tr><td class="text-start px-2 small">Subject 02</td><td>100</td><td class="fw-bold">[SUBJECT_2]</td></tr>
+            <tr><td class="text-start px-2 small">Subject 03</td><td>100</td><td class="fw-bold">[SUBJECT_3]</td></tr>
+        </tbody>
+        <tfoot class="bg-light fw-bold">
+            <tr>
+                <td colspan="2" class="text-end py-1 px-2 opacity-75">GRAND TOTAL</td>
+                <td class="text-primary py-1 px-2">[TOTAL_MARKS] / 500</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-end py-1 px-2 opacity-75">RESULT STATUS</td>
+                <td class="[STATUS_CLASS] py-1 px-2">[STATUS]</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>`,
+            footer: `<div class="mt-4 pt-2 d-flex justify-content-between align-items-end" style="font-size: 0.7rem;">
+    <div class="text-center">
+        <div class="mb-1">[VERIFICATION_QR]</div>
+        <div class="text-muted fw-bold" style="font-size: 0.55rem;">ID: [TRACKING_ID]</div>
+    </div>
+    <div class="text-end">
+        <div class="mb-3">
+            <div class="fw-bold mb-0">Date: [DECLARED_DATE]</div>
+        </div>
+        <div class="pt-1" style="border-top: 1px dashed #cbd5e1; min-width: 150px;">
+            <div class="fw-bold text-dark text-uppercase mb-0">Controller of Exams</div>
+            <div class="text-muted" style="font-size: 0.55rem;">Authorized Digital Signed</div>
+        </div>
+    </div>
+</div>`
+        };
+
+        if(snippets[type]) {
+            editor.insert(snippets[type]);
+            updatePreview();
+        }
     }
 
     function copyTag(tag) {
