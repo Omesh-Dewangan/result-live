@@ -283,16 +283,11 @@
         <tbody>
             <tr><td class="text-start px-2 small">Subject 01</td><td>100</td><td class="fw-bold">[SUBJECT_1]</td></tr>
             <tr><td class="text-start px-2 small">Subject 02</td><td>100</td><td class="fw-bold">[SUBJECT_2]</td></tr>
-            <tr><td class="text-start px-2 small">Subject 03</td><td>100</td><td class="fw-bold">[SUBJECT_3]</td></tr>
         </tbody>
         <tfoot class="bg-light fw-bold">
             <tr>
                 <td colspan="2" class="text-end py-1 px-2 opacity-75">GRAND TOTAL</td>
                 <td class="text-primary py-1 px-2">[TOTAL_MARKS] / 500</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="text-end py-1 px-2 opacity-75">RESULT STATUS</td>
-                <td class="[STATUS_CLASS] py-1 px-2">[STATUS]</td>
             </tr>
         </tfoot>
     </table>
@@ -315,7 +310,19 @@
         };
 
         if(snippets[type]) {
-            editor.insert(snippets[type]);
+            if (type === 'header') {
+                // Insert at the absolute top
+                editor.session.insert({row: 0, column: 0}, snippets[type] + "\n\n");
+                editor.gotoLine(1, 0);
+            } else if (type === 'footer') {
+                // Insert at the absolute bottom
+                const lastLine = editor.session.getLength();
+                editor.session.insert({row: lastLine, column: 0}, "\n\n" + snippets[type]);
+                editor.gotoLine(lastLine + 10, 0);
+            } else {
+                // Normal insert at cursor
+                editor.insert(snippets[type]);
+            }
             updatePreview();
         }
     }
